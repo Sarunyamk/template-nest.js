@@ -13,6 +13,6 @@ import { AppJwtService } from './services/jwt.service';
     { provide: HASH_SERVICE, useClass: BcryptService },
     { provide: APP_JWT_SERVICE, useClass: AppJwtService },
   ],
-  exports: [TypeConfigService, HASH_SERVICE],
+  exports: [TypeConfigService, HASH_SERVICE, APP_JWT_SERVICE],
 })
 export class SecurityModule {}
