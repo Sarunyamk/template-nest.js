@@ -6,6 +6,7 @@ export class GlobalValidationPipe extends ValidationPipe {
     super({
       transform: true,
       whitelist: true,
+      forbidNonWhitelisted: true,
       forbidUnknownValues: true,
       exceptionFactory(errors) {
         const formattedError = errors.reduce<Record<string, string[]>>(
