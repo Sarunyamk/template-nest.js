@@ -5,7 +5,7 @@ import { PrismaClient } from './generated/prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-  constructor(typeConfigService: TypeConfigService) {
+  constructor(private readonly typeConfigService: TypeConfigService) {
     const adapter = new PrismaPg({
       connectionString: typeConfigService.get('DATABASE_URL'),
     });
