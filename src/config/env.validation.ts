@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { z } from 'zod/v4';
 
 export const envSchema = z.object({
@@ -24,3 +25,13 @@ export const envSchema = z.object({
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
+
+export const validate = (config: Record<string, any>) => {
+  const { data, success, error } = envSchema.safeParse(config);
+  if (!success) {
+    const logger = new Logger('Envvalidation');
+    logger.error(`ENV Validation failed \n${z.prettifyError(error)}`);
+    process.exit(1);
+  }
+  return data;
+};
