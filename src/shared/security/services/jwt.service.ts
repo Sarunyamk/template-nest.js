@@ -1,9 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ErrorTypes } from 'src/common/types/error-type';
 import { TypeConfigService } from 'src/config/type-config.service';
 import { type JwtPayload } from 'src/modules/auth/types/jwt-payload.type';
-import { IAppJwtService } from '../interfaces/jwt.interface';
+import { type IAppJwtService } from '../interfaces/jwt.interface';
 
 @Injectable()
 export class AppJwtService implements IAppJwtService {
@@ -29,15 +28,8 @@ export class AppJwtService implements IAppJwtService {
   }
 
   async verifyAccessToken(token: string): Promise<JwtPayload> {
-    try {
-      return await this.jwtService.verifyAsync<JwtPayload>(token, {
-        secret: this.jwtSecret,
-      });
-    } catch {
-      throw new UnauthorizedException({
-        message: 'Invalid or expired access token',
-        code: ErrorTypes.InvalidToken,
-      });
-    }
+    return this.jwtService.verifyAsync<JwtPayload>(token, {
+      secret: this.jwtSecret,
+    });
   }
 }

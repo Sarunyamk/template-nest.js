@@ -18,7 +18,7 @@ export class GlobalValidationPipe extends ValidationPipe {
           {},
         );
         throw new BadRequestException({
-          message: 'The provide data is Invalid',
+          message: 'The provided data is invalid',
           code: ErrorTypes.ValidationError,
           details: formattedError,
         });
