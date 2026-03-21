@@ -7,7 +7,7 @@ import { type IAppJwtService } from '../interfaces/jwt.interface';
 @Injectable()
 export class AppJwtService implements IAppJwtService {
   private readonly jwtSecret: string;
-  private readonly accessTtl: string;
+  private readonly accessTtl: number;
 
   constructor(
     private readonly jwtService: JwtService,
@@ -22,7 +22,7 @@ export class AppJwtService implements IAppJwtService {
       { sub: payload.sub, email: payload.email, role: payload.role },
       {
         secret: this.jwtSecret,
-        expiresIn: this.accessTtl as unknown as number,
+        expiresIn: this.accessTtl,
       },
     );
   }

@@ -10,8 +10,8 @@ export const envSchema = z.object({
   DATABASE_URL: z.url(),
 
   JWT_SECRET: z.string().min(32),
-  JWT_ACCESS_TTL: z.string().default('15m'),
-  JWT_REFRESH_TTL: z.string().default('7d'),
+  JWT_ACCESS_TTL: z.coerce.number().int().positive(),
+  JWT_REFRESH_TTL: z.coerce.number().int().positive(),
   SALT_ROUNDS: z.coerce.number().default(10),
 
   ALLOWED_ORIGINS: z.string().default('http://localhost:4000'),
