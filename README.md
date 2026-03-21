@@ -1,98 +1,231 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Template
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A production-ready NestJS template with authentication, role-based access control, Prisma ORM, and standardized API responses.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+- **NestJS 11** + TypeScript
+- **Prisma 7** + PostgreSQL (driver adapter)
+- **JWT** authentication + role-based guards
+- **Zod** environment validation
+- **Swagger** API documentation (non-production)
+- **pnpm** package manager
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting Started
 
-## Project setup
+### 1. Clone
 
 ```bash
-$ pnpm install
+git clone <repo-url> my-project
+cd my-project
 ```
 
-## Compile and run the project
+### 2. Install dependencies
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm install
 ```
 
-## Run tests
+### 3. Configure environment
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
+Edit `.env` with your values:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```env
+API_PORT=4000
+NODE_ENV=development
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+
+JWT_SECRET="generate-secure-random-string-min-32-chars"
+JWT_ACCESS_TTL=900          # seconds (900 = 15 minutes)
+JWT_REFRESH_TTL=604800      # seconds (604800 = 7 days)
+SALT_ROUNDS=10
+
+ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5173"
+
+CLOUDINARY_CLOUD_NAME=""
+CLOUDINARY_API_KEY=""
+CLOUDINARY_API_SECRET=""
+```
+
+### 4. Setup database
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+pnpm prisma migrate dev
+pnpm prisma generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Run
 
-## Resources
+```bash
+pnpm start:dev
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+- API: `http://localhost:4000/api`
+- Swagger: `http://localhost:4000/api-docs`
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Project Structure
 
-## Support
+```
+src/
+├── main.ts                          # Bootstrap
+├── app.module.ts                    # Root module
+├── @types/                          # Type augmentation
+├── common/
+│   ├── decorators/                  # @Public, @Roles, @CurrentUser, @ResponseMessage
+│   ├── dto/                         # PaginationQueryDto, PaginatedResponseDto
+│   ├── exceptions/                  # GlobalFilter, PrismaExceptionFilter, BaseException
+│   ├── interceptors/                # TransformInterceptor (standardized response)
+│   ├── pipes/                       # GlobalValidationPipe
+│   └── types/                       # ErrorTypes
+├── config/                          # ConfigModule + Zod env validation
+├── database/                        # Prisma module + service
+├── modules/
+│   └── auth/
+│       ├── guards/                  # AuthGuard (JWT), RolesGuard
+│       └── types/                   # JwtPayload, UserRole
+└── shared/
+    └── security/                    # BcryptService, AppJwtService (via interfaces)
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Built-in Decorators
 
-## Stay in touch
+### `@Public()`
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Skip authentication for a route.
 
-## License
+### `@Roles(...roles)`
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Restrict access by role. `SUPER_ADMIN` bypasses all role checks.
+
+### `@CurrentUser()`
+
+Extract the authenticated user (or a specific field) from the request.
+
+### `@ResponseMessage(message)`
+
+Set a custom success message in the response.
+
+## Example Module
+
+Here's how to create a new module using the built-in features:
+
+### 1. Generate module
+
+```bash
+nest g module modules/users
+nest g controller modules/users
+nest g service modules/users
+```
+
+### 2. Controller example
+
+```typescript
+
+@ApiTags('Users')
+@ApiBearerAuth()
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  // Public route - no authentication required
+  @Public()
+  @Get('count')
+  getTotalCount() {
+    return this.usersService.count();
+  }
+
+  // Authenticated - any logged-in user
+  @Get('me')
+  @ResponseMessage('Profile retrieved')
+  getProfile(@CurrentUser() user: JwtPayload) {
+    return this.usersService.findOne(user.sub);
+  }
+
+  // Authenticated - extract specific field
+  @Get('my-email')
+  getEmail(@CurrentUser('email') email: string) {
+    return { email };
+  }
+
+  // Paginated list - any authenticated user
+  @Get()
+  @ResponseMessage('Users retrieved')
+  async findAll(@Query() query: PaginationQueryDto) {
+    const { data, total } = await this.usersService.findAll(query);
+    return new PaginatedResponseDto(data, total, query.page, query.limit);
+  }
+
+  // Admin only
+  @Roles(UserRole.ADMIN)
+  @Post()
+  @ResponseMessage('User created successfully')
+  create(@Body() dto: CreateUserDto) {
+    return this.usersService.create(dto);
+  }
+}
+```
+
+## API Response Format
+
+### Success
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "message": "Success",
+  "path": "/api/v1/users",
+  "timestamp": "2025-01-01T00:00:00.000Z"
+}
+```
+
+### Paginated
+
+```json
+{
+  "success": true,
+  "data": [...],
+  "meta": {
+    "total": 100,
+    "page": 1,
+    "limit": 20,
+    "totalPages": 5
+  },
+  "message": "Success",
+  "path": "/api/v1/users",
+  "timestamp": "2025-01-01T00:00:00.000Z"
+}
+```
+
+### Error
+
+```json
+{
+  "success": false,
+  "statusCode": 400,
+  "errorCode": "VALIDATION_ERROR",
+  "message": "The provided data is invalid",
+  "details": {
+    "email": ["email must be an email"]
+  },
+  "path": "/api/v1/users",
+  "timestamp": "2025-01-01T00:00:00.000Z"
+}
+```
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm start:dev` | Development with watch mode |
+| `pnpm start:prod` | Production mode |
+| `pnpm build` | Build for production |
+| `pnpm lint` | Lint and fix |
+| `pnpm test` | Run unit tests |
+| `pnpm test:e2e` | Run e2e tests |
+| `pnpm test:cov` | Test coverage |
