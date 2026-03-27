@@ -16,9 +16,9 @@ export const envSchema = z.object({
 
   ALLOWED_ORIGINS: z.string().default('http://localhost:4000'),
 
-  CLOUDINARY_CLOUD_NAME: z.string(),
-  CLOUDINARY_API_KEY: z.string(),
-  CLOUDINARY_API_SECRET: z.string(),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
 
   SEED_ADMIN_EMAIL: z.email().optional(),
   SEED_ADMIN_PASSWORD: z.string().min(8).optional(),
